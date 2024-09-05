@@ -51,18 +51,7 @@ frontends = [
 ]
 
 backends  = [
-	{ address = "127.0.0.1:8081" }
-]
-
-[clusters.mail_tcp]
-protocol = "tcp"
-
-frontends = [
-    { address = "127.0.0.1:8081" }  # This matches the backend of the HTTP cluster
-]
-
-backends = [
-    { address = "192.168.10.30:80" }  # This is your actual whoami backend
+	{ address = "127.0.0.1:8082" }
 ]
 
 #########################################
@@ -76,7 +65,7 @@ address = "185.28.22.166:80"
 
 [[listeners]]
 protocol = "tcp"
-address = "127.0.0.1:8081"
+address = "127.0.0.1:8080"
 # public_address = "185.28.22.166:443"
 # sticky_name = "SOZUBALANCEID"
 # expect_proxy = false
