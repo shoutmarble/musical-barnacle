@@ -2,6 +2,7 @@
 
 How to expose the actual HOST/VPS IP to the client?
 
+So that their isn't a `Verify return code: 64 (IP address mismatch)`
 
 `openssl s_client -connect mail.landingdev.xyz:443 -verify_ip 185.28.22.166`
 ```
