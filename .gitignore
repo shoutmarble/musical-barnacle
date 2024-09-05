@@ -1,0 +1,10 @@
+certs/landingdev.xyz.crt
+certs/landingdev.xyz.issuer.crt
+certs/landingdev.xyz.json
+certs/landingdev.xyz.key
+certs/landingdev.xyz.pem
+certs/server.crt
+certs/server.issuer.crt
+certs/server.json
+certs/server.key
+certs/server.pem

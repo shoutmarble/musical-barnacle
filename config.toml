@@ -1,0 +1,102 @@
+saved_state = "/var/lib/sozu/state.json"
+# automatic_state_save = false
+log_level = "info"
+log_target = "stdout"
+# access_logs_target = "file:///var/log/sozu-access.log"
+command_socket = "/run/sozu/sozu.sock"
+command_buffer_size = 163_840
+max_command_buffer_size = 1_638_400
+worker_count = 2
+worker_automatic_restart = true
+handle_process_affinity = false
+max_connections = 10_000
+max_buffers = 20_000
+# min_buffers = 1
+buffer_size = 16_393
+# ctl_command_timeout = 1000
+pid_file_path = "/run/sozu/sozu.pid"
+front_timeout = 900
+back_timeout = 900
+connect_timeout = 3
+request_timeout = 180
+zombie_check_interval = 1800
+activate_listeners = true
+
+#########################################
+
+[clusters]
+
+[clusters.who]
+protocol = "http"
+https_redirect = true
+
+frontends = [
+	{ address = "185.28.22.166:80", hostname = "who.landingdev.xyz" },
+	# { address = "0.0.0.0:443", hostname = "who.landingdev.xyz", certificate = "/certs/server.crt", key = "/certs/server.key", certificate_chain = "/certs/server.pem" }
+	{ address = "185.28.22.166:443", hostname = "who.landingdev.xyz", certificate = "./certs/server.crt", key = "./certs/server.key", certificate_chain = "./certs/server.pem" }
+]
+
+backends  = [
+	{ address = "192.168.10.20:80" }
+]
+
+[clusters.mail]
+protocol = "http"
+https_redirect = true
+
+frontends = [
+	{ address = "185.28.22.166:80", hostname = "mail.landingdev.xyz" },
+	# { address = "0.0.0.0:443", hostname = "mail.landingdev.xyz", certificate = "/certs/server.crt", key = "/certs/server.key", certificate_chain = "/certs/server.pem" }
+	{ address = "185.28.22.166:443", hostname = "mail.landingdev.xyz", certificate = "./certs/server.crt", key = "./certs/server.key", certificate_chain = "./certs/server.pem" }
+]
+
+backends  = [
+	{ address = "192.168.10.30:80" }
+]
+
+#########################################
+
+[[listeners]]
+protocol = "http"
+address = "185.28.22.166:80"
+# public_address = "185.28.22.166:443"
+# sticky_name = "SOZUBALANCEID"
+# expect_proxy = false
+
+[[listeners]]
+protocol = "tcp"
+address = "185.28.22.166:88"
+# public_address = "185.28.22.166:443"
+# sticky_name = "SOZUBALANCEID"
+# expect_proxy = false
+
+# Example for a HTTPS listener
+[[listeners]]
+protocol = "https"
+address = "185.28.22.166:443"
+# public_address = "185.28.22.166:443"
+# sticky_name = "SOZUBALANCEID"
+# expect_proxy = false
+
+tls_versions = ["TLS_V12", "TLS_V13"]
+
+# TLS ciphers considered as secure can be retrieved on the ANSSI document located here:
+# https://www.ssi.gouv.fr/uploads/2020/03/anssi-guide-recommandations_de_securite_relatives_a_tls-v1.2.pdf
+#
+# When using `Rustls` TLS provider:
+# * Sets the lists of availables ciphers (TLSv1.2 and TLSv1.3). Supported ciphers names are specified at
+#   https://docs.rs/rustls/latest/rustls/static.ALL_CIPHER_SUITES.html
+#
+cipher_list = [
+  # TLS 1.3 cipher suites
+  "TLS13_AES_256_GCM_SHA384",
+  "TLS13_AES_128_GCM_SHA256",
+  "TLS13_CHACHA20_POLY1305_SHA256",
+  # TLS 1.2 cipher suites
+  "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+  "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+  "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+  "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+  "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+  "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+]

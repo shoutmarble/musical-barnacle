@@ -1,0 +1,29 @@
+FROM ubuntu:latest
+
+EXPOSE 80
+EXPOSE 443
+
+RUN mkdir -p /usr/local/bin
+RUN mkdir -p /etc/sozu
+
+RUN mkdir -p /var/lib/sozu/
+RUN mkdir -p /run/sozu/
+
+COPY ./sozu-html-errors/401.html /etc/sozu/html/401.html
+COPY ./sozu-html-errors/404.html /etc/sozu/html/404.html
+COPY ./sozu-html-errors/408.html /etc/sozu/html/408.html
+COPY ./sozu-html-errors/413.html /etc/sozu/html/413.html
+COPY ./sozu-html-errors/502.html /etc/sozu/html/502.html
+COPY ./sozu-html-errors/503.html /etc/sozu/html/503.html
+COPY ./sozu-html-errors/504.html /etc/sozu/html/504.html
+COPY ./sozu-html-errors/507.html /etc/sozu/html/507.html
+
+COPY ./sozu /usr/local/bin/
+COPY ./config.toml /etc/sozu/
+
+WORKDIR /usr/local/bin/
+
+# ENTRYPOINT ["/usr/local/bin/sozu"]
+# CMD ["start", "-c", "/etc/sozu/config.toml"]
+# CMD ["start", "-c", "/bin/bash"]
+CMD ["/bin/bash", "-c", "/usr/local/bin/sozu"]

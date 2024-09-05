@@ -1,0 +1,62 @@
+
+networks:
+    sozu-network:
+        name: "sozu-network"
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+            - subnet: "192.168.10.0/24"
+              gateway: "192.168.10.1"
+
+
+services:
+
+    # sozu:
+    #     image: sozu/sozu:123
+    #     build:
+    #         context: .
+    #         dockerfile: ubuntu-sozu-docker
+    #     command:
+    #     - /bin/sh
+    #     - -c
+    #     - |
+    #         sozu -V
+    #         sozu start -c /etc/sozu/config.toml
+    #     ports:
+    #       - 80:80
+    #       - 443:443
+    #     networks:
+    #         sozu-network:
+    #             ipv4_address: 192.168.10.10
+    #     volumes:
+    #       - ./config.toml:/etc/sozu/config.toml
+    #       - ./certs/landingdev.xyz.crt:/certs/server.crt:ro
+    #       - ./certs/landingdev.xyz.key:/certs/server.key:ro
+    #       - ./certs/landingdev.xyz.pem:/certs/server.pem:ro
+
+
+    who:
+        image: traefik/whoami
+        container_name: who
+        hostname: who
+        domainname: who
+        restart: unless-stopped
+        networks:
+            sozu-network:
+                ipv4_address: 192.168.10.20
+                
+    mail:
+        image: traefik/whoami
+        container_name: mail.landingdev.xyz
+        hostname: mail.landingdev.xyz
+        domainname: mail.landingdev.xyz
+        restart: unless-stopped
+        networks:
+            sozu-network:
+                ipv4_address: 192.168.10.30
+                
+
+
+
+
