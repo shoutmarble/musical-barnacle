@@ -6,7 +6,7 @@ So that their isn't a `Verify return code: 64 (IP address mismatch)`
 
 `openssl s_client -connect mail.landingdev.xyz:443 -verify_ip 185.28.22.166`
 ```
-root@DESKTOP-3LUEUH3:/mnt/c/Users/Terry/Documents/GIT/musical-barnacle# openssl s_client -connect mail.landingdev.xyz:443 -verify_ip 185.28.22.166
+root # openssl s_client -connect mail.landingdev.xyz:443 -verify_ip 185.28.22.166
 CONNECTED(00000003)
 depth=0 CN = landingdev.xyz
 verify error:num=64:IP address mismatch
