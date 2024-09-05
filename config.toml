@@ -31,8 +31,9 @@ protocol = "http"
 https_redirect = true
 
 frontends = [
+	{ address = "185.28.22.166:80", hostname = "185.28.22.166.nip.io" },
 	{ address = "185.28.22.166:80", hostname = "who.landingdev.xyz" },
-	# { address = "0.0.0.0:443", hostname = "who.landingdev.xyz", certificate = "/certs/server.crt", key = "/certs/server.key", certificate_chain = "/certs/server.pem" }
+	{ address = "185.28.22.166:443", hostname = "185.28.22.166.nip.io", certificate = "./certs/server.crt", key = "./certs/server.key", certificate_chain = "./certs/server.pem" }, 
 	{ address = "185.28.22.166:443", hostname = "who.landingdev.xyz", certificate = "./certs/server.crt", key = "./certs/server.key", certificate_chain = "./certs/server.pem" }
 ]
 
@@ -46,12 +47,22 @@ https_redirect = true
 
 frontends = [
 	{ address = "185.28.22.166:80", hostname = "mail.landingdev.xyz" },
-	# { address = "0.0.0.0:443", hostname = "mail.landingdev.xyz", certificate = "/certs/server.crt", key = "/certs/server.key", certificate_chain = "/certs/server.pem" }
 	{ address = "185.28.22.166:443", hostname = "mail.landingdev.xyz", certificate = "./certs/server.crt", key = "./certs/server.key", certificate_chain = "./certs/server.pem" }
 ]
 
 backends  = [
-	{ address = "192.168.10.30:80" }
+	{ address = "127.0.0.1:8081" }
+]
+
+[clusters.mail_tcp]
+protocol = "tcp"
+
+frontends = [
+    { address = "127.0.0.1:8081" }  # This matches the backend of the HTTP cluster
+]
+
+backends = [
+    { address = "192.168.10.30:80" }  # This is your actual whoami backend
 ]
 
 #########################################
@@ -65,7 +76,7 @@ address = "185.28.22.166:80"
 
 [[listeners]]
 protocol = "tcp"
-address = "185.28.22.166:88"
+address = "127.0.0.1:8081"
 # public_address = "185.28.22.166:443"
 # sticky_name = "SOZUBALANCEID"
 # expect_proxy = false
@@ -101,10 +112,17 @@ cipher_list = [
   "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
 ]
 
+
+
 [http]
 add_header = [
     { type = "request", name = "X-Real-IP", value = "%client_ip%" },
     { type = "request", name = "X-Forwarded-For", value = "%client_ip%" },
     { type = "request", name = "X-Forwarded-Proto", value = "%request_proto%" },
     { type = "request", name = "X-Forwarded-Port", value = "%request_port%" }
+]
+
+# Add this section to modify the response
+replace_body = [
+    { type = "response", regex = "IP: 192\\.168\\.10\\.30", replace = "IP: 185.28.22.166" }
 ]

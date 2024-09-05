@@ -8,3 +8,4 @@ certs/server.issuer.crt
 certs/server.json
 certs/server.key
 certs/server.pem
+sozu
