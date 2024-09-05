@@ -100,3 +100,11 @@ cipher_list = [
   "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
   "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
 ]
+
+[http]
+add_header = [
+    { type = "request", name = "X-Real-IP", value = "%client_ip%" },
+    { type = "request", name = "X-Forwarded-For", value = "%client_ip%" },
+    { type = "request", name = "X-Forwarded-Proto", value = "%request_proto%" },
+    { type = "request", name = "X-Forwarded-Port", value = "%request_port%" }
+]
